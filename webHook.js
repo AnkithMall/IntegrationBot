@@ -10,6 +10,10 @@ const port = 3000
 const token = process.env.TOKEN ;
 const mytoken = process.env.MYTOKEN ;
 
+app.get('/',(req,res)=>{
+    res.status(200).send("Hello World!")
+})
+
 app.get('/webhook', (req, res) => {
     let mode = req.query["hub.mode"] ;
     let challenge = req.query["hub.challenge"] ;
