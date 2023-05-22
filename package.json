@@ -5,7 +5,7 @@
   "type": "module",
   "main": "webHook.js",
   "scripts": {
-    "test": "npx nodemon JiraGet.js",
+    "test": "npx nodemon webHook.js",
     "start":"node webHook.js"
   },
   "keywords": [],
