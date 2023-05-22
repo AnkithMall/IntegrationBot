@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "JiraGet.js",
+  "main": "webHook.js",
   "scripts": {
     "test": "npx nodemon JiraGet.js",
     "start":"node webHook.js"
