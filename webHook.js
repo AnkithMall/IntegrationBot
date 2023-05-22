@@ -10,6 +10,7 @@ const token = process.env.TOKEN ;
 const mytoken = process.env.MYTOKEN ;
 
 app.get('/',(req,res)=>{
+    console.log("page loaded");
     res.status(200).send("Hello World!")
 })
 
