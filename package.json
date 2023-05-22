@@ -1,0 +1,23 @@
+{
+  "name": "jira-whatsapp",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "JiraGet.js",
+  "scripts": {
+    "dev": "npx nodemon JiraGet.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web": "^1.0.3",
+    "whatsapp-web.js": "^1.20.0"
+  }
+}
