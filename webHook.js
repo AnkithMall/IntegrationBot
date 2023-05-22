@@ -31,6 +31,7 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook',(req,res)=>{
+    console.log("post entered");
     let body_param=req.body ;
 
     console.log(JSON.stringify(body_param,null,2));
