@@ -1,9 +1,8 @@
-import express from 'express' ;
-import body_parser from 'body-parser'
-import bodyParser from 'body-parser';
-import axios from 'axios';
-import dotenv from 'dotenv' ;
-dotenv.config() ;
+const express =require('express') ;
+const body_parser =require('body-parser');
+const bodyParser =require('body-parser');
+const axios  =require('axios');
+require('dotenv').config() ;
 
 const app = express().use(body_parser.json())
 const port = 3000

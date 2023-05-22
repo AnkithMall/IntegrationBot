@@ -2,7 +2,6 @@
   "name": "jira-whatsapp",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "webHook.js",
   "scripts": {
     "test": "npx nodemon webHook.js",
