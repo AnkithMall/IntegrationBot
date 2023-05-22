@@ -61,4 +61,4 @@ app.post('/webhook',(req,res)=>{
     }
 })
 
-app.listen(port || process.env.PORT, () => console.log(`WebHook listening on port ${port}!`))
+app.listen(process.env.PORT, () => console.log(`WebHook listening on port ${port}!`))
