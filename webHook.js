@@ -81,6 +81,7 @@ app.post('/webhook', async (req, res) => {
                 res.status(500).send('An error occurred while sending the message to Jira'); 
             }
         } else {
+            console.log("Check Message type only text is supported !");
             res.sendStatus(404);
         }
     }
