@@ -14,7 +14,7 @@ async function ReplyMessage(msg,phno,sender){
     try{
     const response = await axios({
         method:"post",
-        url:`https://graph.facebook.com/v13.0/${phno}/message?access_token=${token}`,
+        url:`https://graph.facebook.com/v17.0/${phno}/messages?access_token=${token}`,
         data:{
             messaging_product:"whatsapp" ,
             to:sender,
