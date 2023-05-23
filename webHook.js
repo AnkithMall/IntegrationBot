@@ -1,10 +1,10 @@
 const express = require('express');
-const body_parser = require('body-parser');
+const bodyparser = require('body-parser');
 const axios = require('axios');
 const { response } = require('express');
 require('dotenv').config();
 
-const app = express().use(body_parser.json())
+const app = express().use(bodyparser.json())
 
 
 const token = process.env.TOKEN;
