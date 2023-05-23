@@ -50,7 +50,7 @@ app.post('/webhook', async (req, res) => {
             const key = `Basic ${Buffer.from(`${process.env.MAIL}: ${process.env.JIRA_API_KEY}`).toString('base64')}`;
 
             try {
-                console.log("try catch entered");
+               
                 const response = await axios.post(
                     "https://coolsite42.atlassian.net/rest/api/3/issue",
                     {
@@ -75,6 +75,7 @@ app.post('/webhook', async (req, res) => {
 
                 res.status(200).send("Request success");
             } catch (err) {
+                console.log("try catch entered");
                 console.log(err);
                 res.status(500).send('An error occured while sending the message to jira');
             }
