@@ -10,6 +10,23 @@ const port = 3000 ;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
 
+function ReplyMessage(text,phno,sender){
+    axios({
+        method:"post",
+        url:"https://graph.facebook.com/v13.0/"+phno+"/message?access_token="+token,
+        data:{
+            messaging_product:"whatsapp" ,
+            to:sender,
+            text:{
+                body:text
+            }
+        },
+        headers:{
+            "Content-Type":"application/json"
+        }
+    });
+}
+
 app.get('/', (req, res) => {
     console.log("page loaded");
     res.status(200).send("Hello World!")
@@ -78,10 +95,12 @@ app.post('/webhook', async (req, res) => {
                 res.status(200).send("Request success");
             }catch(error){
                 console.log(error);
+                ReplyMessage('An error occurred while sending the message to Jira. Try after some time',phone_no_id,from) ;
                 res.status(500).send('An error occurred while sending the message to Jira'); 
             }
         } else {
             console.log("Check Message type only text is supported !");
+            ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
             res.sendStatus(403);
         }
     }
