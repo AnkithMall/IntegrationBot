@@ -10,8 +10,8 @@ const port = 3000 ;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
 
-async function ReplyMessage(msg,phno,sender){
-    await axios({
+function ReplyMessage(msg,phno,sender){
+    axios({
         method:"post",
         url:"https://graph.facebook.com/v13.0/"+phno+"/message?access_token="+token,
         data:{
