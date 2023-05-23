@@ -76,7 +76,7 @@ app.post('/webhook', async (req, res) => {
 
             try {
                 const response = await axios.post(
-                    "https://coolsite42.atlassian.net/rest/api/3/issued",
+                    "https://coolsite42.atlassian.net/rest/api/3/issue",
                     {
                             "fields": {
                               "summary": msg_body,
@@ -90,7 +90,7 @@ app.post('/webhook', async (req, res) => {
                     },{
                     headers: {
                         'Authorization': `Basic ${Buffer.from(
-                            key
+                            key+'56'
                         ).toString('base64')}`,
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
