@@ -9,7 +9,7 @@ app.use(body_parser.urlencoded({ extended: true }));
 const port = 3000 ;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
-
+/*
 function ReplyMessage(msg,phno,sender){
     axios({
         method:"post",
@@ -25,7 +25,7 @@ function ReplyMessage(msg,phno,sender){
             "Content-Type":"application/json"
         }
     });
-}
+}*/
 
 app.get('/', (req, res) => {
     console.log("page loaded");
@@ -103,7 +103,21 @@ app.post('/webhook', async (req, res) => {
                 const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
                 const from = body_param.entry[0].changes[0].value.messages[0].from;
                 console.log("Check Message type only text is supported !");
-                await ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
+                //await ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
+                await axios({
+                    method:"post",
+                    url:"https://graph.facebook.com/v13.0/"+phone_no_id+"/message?access_token="+token,
+                    data:{
+                        messaging_product:"whatsapp" ,
+                        to:from,
+                        text:{
+                            body:'Check Message type only text is supported !'
+                        }
+                    },
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                });
                 res.sendStatus(202);
             }
             res.sendStatus(403);
