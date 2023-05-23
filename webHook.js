@@ -110,6 +110,7 @@ app.post('/webhook', async (req, res) => {
                 
                 console.log("ph id =>",phone_no_id);
                 console.log(from);
+                console.log(token);
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
                 res.sendStatus(202);
