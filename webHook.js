@@ -70,7 +70,8 @@ app.post('/webhook',async (req,res)=>{
                         'Content-Type': 'application/json'
                     }
                 }).then(function (response) {
-                    console.log(`Response: ${response.status} ${response.statusText}`);
+                    console.log(`Response from jira : ${response.status} ${response.statusText}`);
+                    console.log(response.body)
                     return response.text();
                   }).then(text => console.log(text))
                   .catch(function (error) {
