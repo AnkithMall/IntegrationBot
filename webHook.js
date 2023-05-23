@@ -99,6 +99,8 @@ app.post('/webhook', async (req, res) => {
                 res.status(500).send('An error occurred while sending the message to Jira'); 
             }
         } else {
+            const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+            const from = body_param.entry[0].changes[0].value.messages[0].from;
             console.log("Check Message type only text is supported !");
             ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
             res.sendStatus(403);
