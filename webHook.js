@@ -30,31 +30,29 @@ app.get('/webhook', (req, res) => {
         }
     }
 })
-
-app.post('/webhook', async (req, res) => {
-
-    async function ReplyMessage(msg, phno, sender) {
-        try {
-            const response = await axios({
-                method: "post",
-                url: `https://graph.facebook.com/v16.0/${phno}/messages?access_token=${token}`,
-                data: {
-                    messaging_product: "whatsapp",
-                    to: sender,
-                    text: {
-                        body: msg
-                    }
-                },
-                headers: {
-                    "Content-Type": "application/json"
+async function ReplyMessage(msg, phno, sender) {
+    try {
+        const response = await axios({
+            method: "post",
+            url: `https://graph.facebook.com/v16.0/${phno}/messages?access_token=${token}`,
+            data: {
+                messaging_product: "whatsapp",
+                to: sender,
+                text: {
+                    body: msg
                 }
-            });
-            console.log(`Response from Facebook Graph API: ${response.status} ${response.statusText}`);
-        } catch (error) {
-            console.error('Error sending message:', error.message);
-            console.error('Error details:', error.response.data);
-        }
+            },
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        console.log(`Response from Facebook Graph API: ${response.status} ${response.statusText}`);
+    } catch (error) {
+        console.error('Error sending message:', error.message);
+        console.error('Error details:', error.response.data);
     }
+}
+app.post('/webhook', async (req, res) => {
     console.log("post entered");
     let body_param = req.body;
     //console.log(JSON.stringify(body_param,null,2));
@@ -103,10 +101,12 @@ app.post('/webhook', async (req, res) => {
                     console.log(response.data)
 
                     res.status(200).send("Request success");
+                    return;
                 } catch (error) {
                     console.log(error);
                     await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
                     res.status(418).send('An error occurred while sending the message to Jira');
+                    return ;
                 }
             } else {
                 console.log("Check Message type only text is supported !");
@@ -116,6 +116,7 @@ app.post('/webhook', async (req, res) => {
             }
         } else {
             res.sendStatus(403);
+            return ;
         }
     }
 })
