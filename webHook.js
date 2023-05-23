@@ -44,19 +44,30 @@ app.post('/webhook',(req,res)=>{
                 let phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id ;
                 let from = body_param.entry[0].changes[0].value.messages[0].from ;
                 let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body ;
-
+                let key = process.env.MAIL+":"+process.env.JIRA_API_KEY ;
+                
                 axios({
                     method:'post',
-                    url:"https://graph.facebook.com/v16.0/"+phone_no_id+"/messages?access_token="+token,
-                    data:{
-                        messaging_product:"whatsapp",
-                        to:from,
-                        text:{
-                            body:"Hi..I'm Ankith"
-                        }
-                    },
+                    url:"https://coolsite42.atlassian.net/rest/api/3/issue",
+                    data:
+                        `{
+                            "fields": {
+                              "summary": "${msg_body}",
+                              "issuetype": {
+                                "id": "10001"
+                              },
+                              "project":{
+                                "id":"10000"
+                              }
+                            }
+                          }`
+                    ,
                     headers:{
-                        "Content-Type":"application/json"
+                        'Authorization': `Basic ${Buffer.from(
+                            key
+                        ).toString('base64')}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     }
                 });
                 res.status(200).send("Request success") ;
