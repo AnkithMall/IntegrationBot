@@ -70,7 +70,6 @@ app.post('/webhook',(req,res)=>{
                         'Content-Type': 'application/json'
                     }
                 }).then(function (response) {
-                    
                     console.log(`Response: ${response.status} ${response.statusText}`);
                     return response.text();
                   }).then(text => console.log(text))
