@@ -6,32 +6,9 @@ require('dotenv').config();
 const app = express().use(body_parser.json())
 app.use(body_parser.urlencoded({ extended: true }));
 
-const port = 3000 ;
+const port = 3000;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
-
-async function ReplyMessage(msg,phno,sender){
-    try{
-    const response = await axios({
-        method:"post",
-        url:`https://graph.facebook.com/v16.0/${phno}/messages?access_token=${token}`,
-        data:{
-            messaging_product:"whatsapp" ,
-            to:sender,
-            text:{
-                body:msg
-            }
-        },
-        headers:{
-            "Content-Type":"application/json"
-        }
-    });
-    console.log(`Response from Facebook Graph API: ${response.status} ${response.statusText}`);
-    }catch(error){
-        console.error('Error sending message:', error.message);
-    console.error('Error details:', error.response.data);
-    }
-}
 
 app.get('/', (req, res) => {
     console.log("page loaded");
@@ -55,11 +32,34 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', async (req, res) => {
+
+    async function ReplyMessage(msg, phno, sender) {
+        try {
+            const response = await axios({
+                method: "post",
+                url: `https://graph.facebook.com/v16.0/${phno}/messages?access_token=${token}`,
+                data: {
+                    messaging_product: "whatsapp",
+                    to: sender,
+                    text: {
+                        body: msg
+                    }
+                },
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            console.log(`Response from Facebook Graph API: ${response.status} ${response.statusText}`);
+        } catch (error) {
+            console.error('Error sending message:', error.message);
+            console.error('Error details:', error.response.data);
+        }
+    }
     console.log("post entered");
     let body_param = req.body;
     //console.log(JSON.stringify(body_param,null,2));
     if (body_param.object) {
-        
+
         if (body_param.entry &&
             body_param.entry[0].changes &&
             body_param.entry[0].changes[0].value.messages &&
@@ -70,23 +70,23 @@ app.post('/webhook', async (req, res) => {
             const from = body_param.entry[0].changes[0].value.messages[0].from;
             const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
 
-            const key = process.env.MAIL+':'+process.env.JIRA_API_KEY ;
+            const key = process.env.MAIL + ':' + process.env.JIRA_API_KEY;
             //const authkey = `Basic ${Buffer.from(key).toString('base64')}`;
 
             try {
                 const response = await axios.post(
                     "https://coolsite42.atlassian.net/rest/api/3/issue",
                     {
-                            "fields": {
-                              "summary": msg_body,
-                              "issuetype": {
+                        "fields": {
+                            "summary": msg_body,
+                            "issuetype": {
                                 "id": "10001"
-                              },
-                              "project":{
-                                "id":"10000"
-                              },
                             },
-                    },{
+                            "project": {
+                                "id": "10000"
+                            },
+                        },
+                    }, {
                     headers: {
                         'Authorization': `Basic ${Buffer.from(
                             key
@@ -94,22 +94,22 @@ app.post('/webhook', async (req, res) => {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                }) ;
-                console.log(`Response from Jira: ${response.status} ${response.statusText}`) ;
+                });
+                console.log(`Response from Jira: ${response.status} ${response.statusText}`);
                 console.log(response.data)
 
                 res.status(200).send("Request success");
-            }catch(error){
+            } catch (error) {
                 console.log(error);
-                await ReplyMessage('An error occurred while sending the message to Jira. Try after some time',phone_no_id,from) ;
-                res.status(418).send('An error occurred while sending the message to Jira'); 
+                await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
+                res.status(418).send('An error occurred while sending the message to Jira');
             }
         } else {
-            if(body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from){
+            if (body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from) {
                 const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
                 const from = body_param.entry[0].changes[0].value.messages[0].from;
                 console.log("Check Message type only text is supported !");
-                await ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
+                await ReplyMessage('Check Message type only text is supported !', phone_no_id, from);
                 res.sendStatus(202);
             }
             res.sendStatus(403);
