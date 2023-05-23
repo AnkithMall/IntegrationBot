@@ -1,10 +1,12 @@
 const express = require('express');
 const body_parser = require('body-parser');
 const axios = require('axios');
+const { response } = require('express');
 require('dotenv').config();
 
 const app = express().use(body_parser.json())
-const port = 3000
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
 
@@ -40,46 +42,43 @@ app.post('/webhook', async (req, res) => {
             body_param.entry[0].changes[0].value.messages &&
             body_param.entry[0].changes[0].value.messages[0]
         ) {
-            let phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
-            let from = body_param.entry[0].changes[0].value.messages[0].from;
-            let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-            let key = process.env.MAIL + ":" + process.env.JIRA_API_KEY;
+            const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+            const from = body_param.entry[0].changes[0].value.messages[0].from;
+            const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+            const key = `Basic ${Buffer.from(`${process.env.MAIL}: ${process.env.JIRA_API_KEY}`).toString('base64')}`;
 
-            await axios({
-                method: 'post',
-                url: "https://coolsite42.atlassian.net/rest/api/3/issue",
-                data:
-                    `{
-                            "fields": {
-                              "summary": "${msg_body}",
-                              "issuetype": {
+            try {
+                const response = await axios.post(
+                    "https://coolsite42.atlassian.net/rest/api/3/issue",
+                    {
+                        "fields": {
+                            "summary": `${msg_body}`,
+                            "issuetype": {
                                 "id": "10001"
-                              },
-                              "project":{
-                                "id":"10000"
-                              }
-                            }
-                          }`
-                ,
-                headers: {
-                    'Authorization': `Basic ${Buffer.from(
-                        key
-                    ).toString('base64')}`,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then(function (response) {
-                console.log(`Response from jira : ${response.status} ${response.statusText}`);
-                console.log(response.data);
-            })
-                .catch(function (error) {
-                    console.log(error);
+                            },
+                            "project": {
+                                "id": "10000"
+                            },
+                        },
+                    }, {
+                    headers: {
+                        'Authorization': key,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
                 });
-            res.status(200).send("Request success");
+                console.log(`Response from Jira: ${response.status} ${response.statusText}`);
+                console.log(response.data);
+
+                res.status(200).send("Request success");
+            } catch (err) {
+                console.log(err);
+                res.status(500).send('An error occured while sending the message to jira');
+            }
         } else {
             res.sendStatus(404);
         }
     }
-})
+});
 
 app.listen(process.env.PORT, () => console.log(`WebHook listening on port ${port}!`))
