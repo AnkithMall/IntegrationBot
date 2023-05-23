@@ -71,7 +71,7 @@ app.post('/webhook',async (req,res)=>{
                     }
                 }).then(function (response) {
                     console.log(`Response: ${response.status} ${response.statusText}`);
-                    return response.text;
+                    return response.text();
                   }).then(text => console.log(text))
                   .catch(function (error) {
                     console.log(error);
