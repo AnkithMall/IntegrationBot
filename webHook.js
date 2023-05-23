@@ -34,7 +34,7 @@ app.post('/webhook',(req,res)=>{
     console.log("post entered");
     let body_param=req.body ;
 
-    console.log(JSON.stringify(body_param,null,2));
+    //console.log(JSON.stringify(body_param,null,2));
     if(body_param.object){
         if(body_param.entry && 
             body_param.entry[0].changes && 
@@ -71,6 +71,8 @@ app.post('/webhook',(req,res)=>{
                     }
                 }).then(function (response) {
                     console.log(response);
+                  }).catch(function (error) {
+                    console.log(error);
                   });
                 res.status(200).send("Request success") ;
             }else{
