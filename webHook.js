@@ -10,8 +10,8 @@ const port = 3000 ;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
 
-function ReplyMessage(msg,phno,sender){
-    axios({
+async function ReplyMessage(msg,phno,sender){
+    await axios({
         method:"post",
         url:"https://graph.facebook.com/v13.0/"+phno+"/message?access_token="+token,
         data:{
@@ -99,11 +99,13 @@ app.post('/webhook', async (req, res) => {
                 res.status(500).send('An error occurred while sending the message to Jira'); 
             }
         } else {
-
-            const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
-            const from = body_param.entry[0].changes[0].value.messages[0].from;
-            console.log("Check Message type only text is supported !");
-            await ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
+            if(body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from){
+                const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+                const from = body_param.entry[0].changes[0].value.messages[0].from;
+                console.log("Check Message type only text is supported !");
+                ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
+                res.sendStatus(202);
+            }
             res.sendStatus(403);
         }
     }
