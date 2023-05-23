@@ -96,7 +96,7 @@ app.post('/webhook', async (req, res) => {
             }catch(error){
                 console.log(error);
                 //ReplyMessage('An error occurred while sending the message to Jira. Try after some time',phone_no_id,from) ;
-                res.status(500).send('An error occurred while sending the message to Jira'); 
+                res.status(418).send('An error occurred while sending the message to Jira'); 
             }
         } else {
             if(body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from){
