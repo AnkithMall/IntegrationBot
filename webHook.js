@@ -47,7 +47,7 @@ app.post('/webhook', async (req, res) => {
             const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
 
             const key = process.env.MAIL+':'+process.env.JIRA_API_KEY ;
-            const authkey = `Basic ${Buffer.from(key).toString('base64')}`;
+            //const authkey = `Basic ${Buffer.from(key).toString('base64')}`;
 
             try {
                 const response = await axios.post(
@@ -64,7 +64,9 @@ app.post('/webhook', async (req, res) => {
                             },
                     },{
                     headers: {
-                        'Authorization': key,
+                        'Authorization': `Basic ${Buffer.from(
+                            key
+                        ).toString('base64')}`,
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
