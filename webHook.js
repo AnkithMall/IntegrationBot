@@ -43,13 +43,14 @@ app.post('/webhook', async (req, res) => {
             body_param.entry[0].changes[0].value.messages &&
             body_param.entry[0].changes[0].value.messages[0]
         ) {
-            console.log("post body object entered");
+            
             const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
             const from = body_param.entry[0].changes[0].value.messages[0].from;
             const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
             const key = `Basic ${Buffer.from(`${process.env.MAIL}: ${process.env.JIRA_API_KEY}`).toString('base64')}`;
 
             try {
+                console.log("try catch entered");
                 const response = await axios.post(
                     "https://coolsite42.atlassian.net/rest/api/3/issue",
                     {
