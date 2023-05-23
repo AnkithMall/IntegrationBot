@@ -59,14 +59,16 @@ app.post('/webhook', async (req, res) => {
     let body_param = req.body;
     //console.log(JSON.stringify(body_param,null,2));
     if (body_param.object) {
+        const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+        const from = body_param.entry[0].changes[0].value.messages[0].from;
         if (body_param.entry &&
             body_param.entry[0].changes &&
             body_param.entry[0].changes[0].value.messages &&
             body_param.entry[0].changes[0].value.messages[0] &&
             body_param.entry[0].changes[0].value.messages[0].type === 'text'
         ) {
-            const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
-            const from = body_param.entry[0].changes[0].value.messages[0].from;
+            //const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+            //const from = body_param.entry[0].changes[0].value.messages[0].from;
             const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
 
             const key = process.env.MAIL+':'+process.env.JIRA_API_KEY ;
@@ -105,8 +107,7 @@ app.post('/webhook', async (req, res) => {
             }
         } else {
             if(body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from){
-                const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
-                const from = body_param.entry[0].changes[0].value.messages[0].from;
+                
                 console.log("ph id =>",phone_no_id);
                 console.log(from);
                 console.log("Check Message type only text is supported !");
