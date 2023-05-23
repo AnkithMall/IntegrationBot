@@ -76,7 +76,7 @@ app.post('/webhook', async (req, res) => {
 
             try {
                 const response = await axios.post(
-                    "https://coolsite42.atlassian.net/rest/api/3/issue",
+                    "https://coolsite42.atlassian.net/rest/api/3/issued",
                     {
                             "fields": {
                               "summary": msg_body,
@@ -102,15 +102,11 @@ app.post('/webhook', async (req, res) => {
                 res.status(200).send("Request success");
             }catch(error){
                 console.log(error);
-                //ReplyMessage('An error occurred while sending the message to Jira. Try after some time',phone_no_id,from) ;
+                await ReplyMessage('An error occurred while sending the message to Jira. Try after some time',phone_no_id,from) ;
                 res.status(418).send('An error occurred while sending the message to Jira'); 
             }
         } else {
             if(body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from){
-                
-                console.log("ph id =>",phone_no_id);
-                console.log(from);
-                console.log(token);
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !',phone_no_id,from) ;
                 res.sendStatus(202);
