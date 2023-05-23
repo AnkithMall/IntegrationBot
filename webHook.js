@@ -5,7 +5,7 @@ const { response } = require('express');
 require('dotenv').config();
 
 const app = express().use(body_parser.json())
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
