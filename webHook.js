@@ -82,7 +82,7 @@ app.post('/webhook', async (req, res) => {
             }
         } else {
             console.log("Check Message type only text is supported !");
-            res.sendStatus(404);
+            res.sendStatus(403);
         }
     }
 })
