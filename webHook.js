@@ -10,7 +10,7 @@ const port = 3000 ;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
 
-function ReplyMessage(text,phno,sender){
+function ReplyMessage(msg,phno,sender){
     axios({
         method:"post",
         url:"https://graph.facebook.com/v13.0/"+phno+"/message?access_token="+token,
@@ -18,7 +18,7 @@ function ReplyMessage(text,phno,sender){
             messaging_product:"whatsapp" ,
             to:sender,
             text:{
-                body:text
+                body:msg
             }
         },
         headers:{
