@@ -4,8 +4,9 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express().use(body_parser.json())
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(body_Parser.urlencoded({ extended: true }));
 
+const port = 3000 ;
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN;
 
@@ -67,8 +68,12 @@ app.post('/webhook', async (req, res) => {
                     },
                 }) ;
                 console.log(`Response from Jira: ${response.status} ${response.statusText}`) ;
-                console.log(responsez)
+                console.log(response.data)
+
                 res.status(200).send("Request success");
+            }catch(error){
+                console.log(error);
+                res.status(500).send('An error occurred while sending the message to Jira'); 
             }
         } else {
             res.sendStatus(404);
