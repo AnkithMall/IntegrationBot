@@ -69,7 +69,9 @@ app.post('/webhook',(req,res)=>{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     }
-                });
+                }).then(function (response) {
+                    console.log(response);
+                  });
                 res.status(200).send("Request success") ;
             }else{
                 res.sendStatus(404) ;
