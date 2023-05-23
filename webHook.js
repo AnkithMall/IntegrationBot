@@ -63,56 +63,54 @@ app.post('/webhook', async (req, res) => {
         if (body_param.entry &&
             body_param.entry[0].changes &&
             body_param.entry[0].changes[0].value.messages &&
-            body_param.entry[0].changes[0].value.messages[0] &&
-            body_param.entry[0].changes[0].value.messages[0].type === 'text'
+            body_param.entry[0].changes[0].value.messages[0]
         ) {
+
             const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
             const from = body_param.entry[0].changes[0].value.messages[0].from;
             const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+            if (body_param.entry[0].changes[0].value.messages[0].type === 'text') {
+                const key = process.env.MAIL + ':' + process.env.JIRA_API_KEY;
+                //const authkey = `Basic ${Buffer.from(key).toString('base64')}`;
 
-            const key = process.env.MAIL + ':' + process.env.JIRA_API_KEY;
-            //const authkey = `Basic ${Buffer.from(key).toString('base64')}`;
-
-            try {
-                const response = await axios.post(
-                    "https://coolsite42.atlassian.net/rest/api/3/issue",
-                    {
-                        "fields": {
-                            "summary": msg_body,
-                            "issuetype": {
-                                "id": "10001"
+                try {
+                    const response = await axios.post(
+                        "https://coolsite42.atlassian.net/rest/api/3/issue",
+                        {
+                            "fields": {
+                                "summary": msg_body,
+                                "issuetype": {
+                                    "id": "10001"
+                                },
+                                "project": {
+                                    "id": "10000"
+                                },
                             },
-                            "project": {
-                                "id": "10000"
-                            },
+                        }, {
+                        headers: {
+                            'Authorization': `Basic ${Buffer.from(
+                                key
+                            ).toString('base64')}`,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
                         },
-                    }, {
-                    headers: {
-                        'Authorization': `Basic ${Buffer.from(
-                            key
-                        ).toString('base64')}`,
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                });
-                console.log(`Response from Jira: ${response.status} ${response.statusText}`);
-                console.log(response.data)
+                    });
+                    console.log(`Response from Jira: ${response.status} ${response.statusText}`);
+                    console.log(response.data)
 
-                res.status(200).send("Request success");
-            } catch (error) {
-                console.log(error);
-                await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
-                res.status(418).send('An error occurred while sending the message to Jira');
-            }
-        } else {
-            if (body_param.entry[0].changes[0].value.metadata.phone_number_id && body_param.entry[0].changes[0].value.messages[0].from) {
-                const phone_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
-                const from = body_param.entry[0].changes[0].value.messages[0].from;
+                    res.status(200).send("Request success");
+                } catch (error) {
+                    console.log(error);
+                    await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
+                    res.status(418).send('An error occurred while sending the message to Jira');
+                }
+            } else {
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !', phone_no_id, from);
                 res.sendStatus(202);
-                return;
             }
+        } else {
+            res.sendStatus(403);
         }
     }
 })
