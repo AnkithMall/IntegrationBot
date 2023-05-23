@@ -4,7 +4,7 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express().use(body_parser.json())
-app.use(body_Parser.urlencoded({ extended: true }));
+app.use(body_parser.urlencoded({ extended: true }));
 
 const port = 3000 ;
 const token = process.env.TOKEN;
