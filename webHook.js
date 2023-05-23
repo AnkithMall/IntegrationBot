@@ -70,14 +70,14 @@ app.post('/webhook', async (req, res) => {
                         'Content-Type': 'application/json'
                     },
                 });
+                console.log("try catch entered");
                 console.log(`Response from Jira: ${response.status} ${response.statusText}`);
                 console.log(response.data);
 
                 res.status(200).send("Request success");
             } catch (err) {
-                console.log("try catch entered");
                 console.log(err);
-                res.status(500).send('An error occured while sending the message to jira');
+                res.status(501).send('An error occured while sending the message to jira');
             }
         } else {
             res.sendStatus(404);
