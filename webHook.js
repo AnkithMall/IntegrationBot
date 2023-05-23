@@ -90,7 +90,7 @@ app.post('/webhook', async (req, res) => {
                     },{
                     headers: {
                         'Authorization': `Basic ${Buffer.from(
-                            key+'56'
+                            key
                         ).toString('base64')}`,
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
