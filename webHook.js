@@ -52,7 +52,7 @@ async function ReplyMessage(msg, phno, sender) {
         console.error('Error details:', error.response.data);
     }
 }
-await app.post('/webhook', async (req, res) => {
+app.post('/webhook', async (req, res) => {
     console.log("post entered");
     let body_param = req.body;
     //console.log(JSON.stringify(body_param,null,2));
