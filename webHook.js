@@ -18,12 +18,12 @@ app.get('/', (req, res) => {
 app.get('/webhook', (req, res) => {
     let mode = req.query["hub.mode"];
     let challenge = req.query["hub.challenge"];
-    let token = req.query["hub.verify_token"];
+    let verify_token = req.query["hub.verify_token"];
 
 
 
-    if (mode && token) {
-        if (mode === "subscribe" && token === mytoken) {
+    if (mode && verify_token) {
+        if (mode === "subscribe" && verify_token === mytoken) {
             res.status(200).send(challenge);
         } else {
             res.status(403);
