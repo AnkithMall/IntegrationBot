@@ -55,6 +55,8 @@ async function ReplyMessage(msg, phno, sender) {
 app.post('/webhook', async (req, res) => {
     console.log("post entered");
     let body_param = req.body;
+    let status_code = 200 ;
+    let res_msg = '' ;
     //console.log(JSON.stringify(body_param,null,2));
     if (body_param.object) {
 
@@ -101,29 +103,35 @@ app.post('/webhook', async (req, res) => {
                     console.log(`Response from Jira: ${response.status} ${response.statusText}`);
                     console.log(response.data)
 
-                    res.status(200).send("Request success");
-                    return;
+                    status_code = 200 ;
+                    res_msg = "Request success" ;
+                    //res.status(200).send("Request success");
+                    //return;
                 } catch (error) {
                     console.log(error);
                     await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
-                    res.status(418).send('An error occurred while sending the message to Jira');
-                    return;
+                    status_code = 418 ;
+                    res_msg = 'An error occurred while sending the message to Jira' ;
+                    //res.status(418).send('An error occurred while sending the message to Jira');
                 }
             } else {
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !', phone_no_id, from);
-                await res.status(400).send("invalid request !");
-                return;
+                status_code = 202 ;
+                res_msg = "invalid request !" ;
+                //res.status(202).send("invalid request !");
             }
         } else {
-            await res.status(400).send();
-            return;
+            status_code = 400 ;
+            res_msg = "invalid request !" ;
+            //res.status(400).send();
         }
     }else{
-        await res.status(400).send() ;
-        return;
+        status_code = 400 ;
+        res_msg = "invalid request !" ;
+        //res.status(400).send() ;
     }
-    return;
+    res.status(status_code).send(res_msg) ;
 })
 
 app.listen(process.env.PORT, () => console.log(`WebHook listening on port ${port}!`))
