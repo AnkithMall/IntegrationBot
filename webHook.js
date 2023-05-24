@@ -55,7 +55,7 @@ async function ReplyMessage(msg, phno, sender) {
 app.post('/webhook', async (req, res) => {
     console.log("post entered");
     let body_param = req.body;
-    let status_code = 200 ;
+    let status_code = 404 ;
     let res_msg = '' ;
     //console.log(JSON.stringify(body_param,null,2));
     if (body_param.object) {
