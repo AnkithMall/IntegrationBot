@@ -110,7 +110,7 @@ app.post('/webhook', async (req, res) => {
                 } catch (error) {
                     console.log(error);
                     await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
-                    status_code = 418 ;
+                    status_code = 500 ;
                     res_msg = 'An error occurred while sending the message to Jira' ;
                     //res.status(418).send('An error occurred while sending the message to Jira');
                 }
