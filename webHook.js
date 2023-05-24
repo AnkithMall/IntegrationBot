@@ -122,11 +122,13 @@ app.post('/webhook', async (req, res) => {
                 //res.status(202).send("invalid request !");
             }
         } else {
+            console.log('invalid request 1 !')
             status_code = 400 ;
             res_msg = "invalid request !" ;
             //res.status(400).send();
         }
     }else{
+        console.log('invalid request 2 !') ;
         status_code = 400 ;
         res_msg = "invalid request !" ;
         //res.status(400).send() ;
