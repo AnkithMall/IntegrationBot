@@ -113,10 +113,12 @@ app.post('/webhook', async (req, res) => {
                 res.sendStatus(202);
             }
         } else {
-            res.sendStatus(400);
+            res.status(400);
+            res.end();
         }
     }else{
-        res.sendStatus(400);
+        res.status(400);
+        res.end() ;
     }
     res.end();
 })
