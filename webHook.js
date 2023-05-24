@@ -106,7 +106,6 @@ app.post('/webhook', async (req, res) => {
                     console.log(error);
                     await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
                     res.status(418).send('An error occurred while sending the message to Jira');
-                    res.end();
                 }
             } else {
                 console.log("Check Message type only text is supported !");
@@ -119,6 +118,7 @@ app.post('/webhook', async (req, res) => {
     }else{
         res.sendStatus(400);
     }
+    res.end();
 })
 
 app.listen(process.env.PORT, () => console.log(`WebHook listening on port ${port}!`))
