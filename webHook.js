@@ -112,16 +112,15 @@ app.post('/webhook', async (req, res) => {
             } else {
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !', phone_no_id, from);
-                res.status(400).send("invalid request !");
+                await res.status(400).send("invalid request !");
                 return;
             }
         } else {
-            res.status(400).send();
+            await res.status(400).send();
             return;
         }
     }else{
-        res.status(400);
-        res.send() ;
+        await res.status(400).send() ;
         return;
     }
     return;
