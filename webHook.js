@@ -101,23 +101,21 @@ app.post('/webhook', async (req, res) => {
                     console.log(response.data)
 
                     res.status(200).send("Request success");
-                    return;
                 } catch (error) {
                     console.log(error);
                     await ReplyMessage('An error occurred while sending the message to Jira. Try after some time', phone_no_id, from);
                     res.status(418).send('An error occurred while sending the message to Jira');
-                    return ;
                 }
             } else {
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !', phone_no_id, from);
                 res.sendStatus(202);
-                return;
             }
         } else {
-            res.sendStatus(403);
-            return ;
+            res.sendStatus(400);
         }
+    }else{
+        res.sendStatus(400);
     }
 })
 
