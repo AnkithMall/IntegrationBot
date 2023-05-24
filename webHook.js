@@ -114,7 +114,10 @@ app.post('/webhook', async (req, res) => {
                     res_msg = 'An error occurred while sending the message to Jira' ;
                     //res.status(418).send('An error occurred while sending the message to Jira');
                 }
-            } else {
+            } else if (body_param.entry[0].changes[0].value.messages[0].type === 'reaction' ||  body_param.entry[0].changes[0].value.messages[0].type === 'image' || 
+            body_param.entry[0].changes[0].value.messages[0].type === 'sticker' || body_param.entry[0].changes[0].value.messages[0].type === 'unknown' ||
+            body_param.entry[0].changes[0].value.messages[0].type === 'button' || body_param.entry[0].changes[0].value.messages[0].type === 'interactive' ||
+            body_param.entry[0].changes[0].value.messages[0].type === 'order' || body_param.entry[0].changes[0].value.messages[0].type === 'system' ){
                 console.log("Check Message type only text is supported !");
                 await ReplyMessage('Check Message type only text is supported !', phone_no_id, from);
                 status_code = 400 ;
