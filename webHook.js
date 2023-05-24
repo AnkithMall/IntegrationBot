@@ -72,9 +72,10 @@ app.post('/webhook', async (req, res) => {
                 body_param.entry[0].changes[0].value.messages[0].text.body
             ) {
                 const msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-                const key = process.env.MAIL + ':' + process.env.JIRA_API_KEY;
-                //const authkey = `Basic ${Buffer.from(key).toString('base64')}`;
-
+                const mail = process.env.MAIL ;
+                const apikey=process.env.JIRA_API_KEY ;
+                const key = `${mail}:${apikey}`;
+                
                 try {
                     const response = await axios.post(
                         "https://coolsite42.atlassian.net/rest/api/3/issue",
